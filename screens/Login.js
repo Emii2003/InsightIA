@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import app from '../Firebase'; // Importação do Firebase
+import app from '../Firebase';
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';
@@ -23,16 +23,22 @@ export default function Login({ navigation }) {
             // Busca o nome do usuário do Firestore
             const db = getFirestore(app);
             const userDoc = await getDoc(doc(db, 'dadosUsuarios', user.uid));
-            const userData = userDoc.data();
+            
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
 
-            if (user.emailVerified) {
-                navigation.replace('Teste', { user: { ...user, name: userData.name } });
-                Alert.alert('Sucesso', 'Usuário logado com sucesso!');
+                if (user.emailVerified) {
+                    // Passa o nome do usuário para a tela de perfil
+                    navigation.replace('Profile', { user: { ...user, name: userData.name } });
+                    Alert.alert('Sucesso', 'Usuário logado com sucesso!');
+                } else {
+                    Alert.alert('Erro', 'Por favor, verifique seu e-mail antes de fazer login.');
+                    auth.signOut(); // Desconecta o usuário
+                }
             } else {
-                Alert.alert('Erro', 'Por favor, verifique seu e-mail antes de fazer login.');
+                Alert.alert('Erro', 'Dados do usuário não encontrados no Firestore.');
                 auth.signOut(); // Desconecta o usuário
             }
-
         } catch (error) {
             console.error('Erro de autenticação:', error.message);
             Alert.alert('Erro', error.message);

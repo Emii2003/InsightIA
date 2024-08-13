@@ -5,7 +5,9 @@ import Home from './screens/Home';
 import Login from './screens/Login';
 import RegistraUsuario from './screens/RegistraUsuario';
 import RecuperarSenha from './screens/RecuperarSenha';
-import Teste from './screens/Teste'; 
+import Profile from './screens/Profile'
+import Search from './screens/Search';
+
 import 'react-native-gesture-handler';
 import { LogBox } from 'react-native'; // Importar LogBox para versões mais recentes
 
@@ -21,7 +23,8 @@ function MyStack() {
       <Stack.Screen name="RegistraUsuario" component={RegistraUsuario} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="RecuperarSenha" component={RecuperarSenha} />
-      <Stack.Screen name="Teste" component={Teste} /> 
+      <Stack.Screen name="Profile" component={Profile} /> 
+      <Stack.Screen name="Search" component={Search}/>
     </Stack.Navigator>
   );
 }

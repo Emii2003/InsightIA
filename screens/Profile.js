@@ -1,17 +1,17 @@
 import React from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Text } from 'react-native';
 import { getAuth } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/native'; // Importa o hook de navegação
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Botao from '../components/Botao';
 import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
 
-const Teste = ({ route }) => {
-    const { user } = route.params; // Recebe os dados do usuário da navegação
-    const navigation = useNavigation(); // Obtém o objeto de navegação
+const Profile = ({ route }) => {
+    const navigation = useNavigation();
+    const currentRoute = useRoute().name;
+    const user = route?.params?.user;
 
-    // Função para fazer logout
     const handleLogout = async () => {
         try {
             await getAuth().signOut();
@@ -21,13 +21,34 @@ const Teste = ({ route }) => {
         }
     };
 
+    React.useEffect(() => {
+        console.log('Profile Screen - User:', user);
+        navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+        });
+    }, [navigation, user]);
+    
+
+    if (!user) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.errorText}>Usuário não encontrado.</Text>
+                <Botao
+                    name="Voltar"
+                    onPress={() => navigation.goBack()}
+                    borderColor="#DC8AA8"
+                    textColor="#DC8AA8"
+                    style={styles.logoutButton}
+                />
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                {/* <Titulo style={styles.headerText}>Olá, </Titulo> */}
                 <Titulo style={styles.headerNameUser}>{user.name}</Titulo>
                 <Titulo style={styles.headerText}>ID: 230 000 000 000</Titulo>
-
             </View>
 
             <View style={styles.buttonContainer}>
@@ -42,10 +63,12 @@ const Teste = ({ route }) => {
 
             <View style={styles.footer}>
                 <Rodape
-                    onHomePress={() => navigation.navigate('Home')}
-                    onSearchPress={() => navigation.navigate('Search')}
-                    onProfilePress={() => navigation.navigate('Profile')}
+                    onHomePress={() => navigation.navigate('Home', { user: { name: user.name, email: user.email } })}
+                    onSearchPress={() => navigation.navigate('Search', { user: { name: user.name, email: user.email } })}
+                    onProfilePress={() => navigation.navigate('Profile', { user: { name: user.name, email: user.email } })}
+                    currentRoute={currentRoute}
                 />
+
             </View>
         </View>
     );
@@ -55,10 +78,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#272727',
-        justifyContent: 'center', // Centraliza o conteúdo principal
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     header: {
-        alignItems: 'flex-start', // Alinha o conteúdo do cabeçalho à esquerda
+        alignItems: 'flex-start',
         flexDirection: 'column',
         justifyContent: 'flex-end',
         backgroundColor: '#A03651',
@@ -68,14 +92,14 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         zIndex: 1,
-        borderBottomLeftRadius: 10, // Arredonda o canto inferior esquerdo
-        borderBottomRightRadius: 10, // Arredonda o canto inferior direito
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
     },
     headerText: {
         fontSize: 20,
         fontWeight: '100'
     },
-    headerNameUser:{
+    headerNameUser: {
         fontSize: 30,
         fontWeight: 900,
     },
@@ -86,7 +110,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     logoutButton: {
-        width: 150, // Garante que o botão ocupe toda a largura disponível do container
+        width: 150,
     },
     footer: {
         width: '100%',
@@ -96,7 +120,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         bottom: 0,
-    }
+    },
+    errorText: {
+        fontSize: 18,
+        color: '#fff',
+        marginBottom: 20,
+    },
 });
 
-export default Teste;
+export default Profile;
