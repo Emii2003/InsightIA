@@ -16,7 +16,6 @@ export default CampoTexto;
 const styles = StyleSheet.create({
     input: {
         backgroundColor: '#232222',
-        width: 300,
         height: 60,
         borderRadius: 8,
         padding: 10,

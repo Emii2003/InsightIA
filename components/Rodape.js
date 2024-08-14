@@ -3,27 +3,24 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 
-const Rodape = ({ onHomePress, onSearchPress, onProfilePress, currentRoute }) => {
+const Rodape = ({ onHomePress, onSearchPress, onProfilePress, currentRoute, user }) => {
     return (
         <View style={styles.footer}>
-            <TouchableOpacity onPress={onHomePress}>
+            <TouchableOpacity onPress={() => onHomePress(user)}>
                 <Ionicons
                     name="analytics"
                     size={30}
                     color={currentRoute === 'Home' ? '#A03651' : '#fff'}
                 />
             </TouchableOpacity>
-            <TouchableOpacity onPress={onSearchPress}>
+            <TouchableOpacity onPress={() => onSearchPress(user)}>
                 <Feather
                     name="search"
                     size={30}
                     color={currentRoute === 'Search' ? '#A03651' : '#fff'}
                 />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-                console.log('Navigating to Profile');
-                onProfilePress();
-            }}>
+            <TouchableOpacity onPress={() => onProfilePress(user)}>
                 <Ionicons
                     name="people"
                     size={30}
@@ -33,6 +30,7 @@ const Rodape = ({ onHomePress, onSearchPress, onProfilePress, currentRoute }) =>
         </View>
     );
 };
+
 
 const styles = StyleSheet.create({
     footer: {

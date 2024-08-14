@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import app from '../Firebase';
 
 import CampoTexto from '../components/CampoTexto';
@@ -23,13 +24,22 @@ export default function Login({ navigation }) {
             // Busca o nome do usuário do Firestore
             const db = getFirestore(app);
             const userDoc = await getDoc(doc(db, 'dadosUsuarios', user.uid));
-            
+
             if (userDoc.exists()) {
                 const userData = userDoc.data();
 
                 if (user.emailVerified) {
-                    // Passa o nome do usuário para a tela de perfil
-                    navigation.replace('Profile', { user: { ...user, name: userData.name } });
+                    // Armazena os dados do usuário no AsyncStorage
+                    await AsyncStorage.setItem('@user_data', JSON.stringify({
+                        uid: user.uid,
+                        email: user.email,
+                        name: userData.name,
+                        nomeEmpresa: userData.nomeEmpresa,
+                        categoriaEmpresa: userData.categoriaEmpresa,
+                    }));
+
+                    // Navega para a tela de perfil
+                    navigation.replace('Profile');
                     Alert.alert('Sucesso', 'Usuário logado com sucesso!');
                 } else {
                     Alert.alert('Erro', 'Por favor, verifique seu e-mail antes de fazer login.');
@@ -48,19 +58,24 @@ export default function Login({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.contentMain}>
-                <Titulo style={styles.title}>Digite seu E-mail</Titulo>
-                <CampoTexto
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-                <Titulo style={styles.title}>Digite sua Senha</Titulo>
-                <CampoTexto
-                    placeholder="Senha"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                <View style={styles.input}>
+                    <Titulo style={styles.title}>Digite seu E-mail</Titulo>
+                    <CampoTexto
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                </View>
+
+                <View style={styles.input}>
+                    <Titulo style={styles.title}>Digite sua Senha</Titulo>
+                    <CampoTexto
+                        placeholder="Senha"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+                </View>
                 <Botao
                     name="Entrar"
                     onPress={handleLogin}
@@ -92,6 +107,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20,
+    },
+    input: {
+        marginBottom: 50
     },
     title: {
         marginBottom: 10,

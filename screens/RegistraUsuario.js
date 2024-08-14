@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import app from '../Firebase'; // Importação do Firebase
 
@@ -46,20 +47,29 @@ const RegistraUsuario = ({ navigation }) => {
             Alert.alert('Erro', 'As senhas não coincidem.');
             return;
         }
-
+    
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-
+    
             await setDoc(doc(db, 'dadosUsuarios', user.uid), {
                 email,
                 name,
                 nomeEmpresa,
                 categoriaEmpresa,
             });
+    
+            // Armazena os dados do usuário no AsyncStorage
+            await AsyncStorage.setItem('@user_data', JSON.stringify({
+                email,
+                name,
+                nomeEmpresa,
+                categoriaEmpresa,
+            }));
+    
             // Envia email de verificação
             await sendEmailVerification(user);
-
+    
             Alert.alert('Sucesso', 'Usuário criado com sucesso! Verifique seu e-mail para ativar sua conta.');
             navigation.navigate('Login'); // Redireciona para a tela de login
         } catch (error) {
@@ -105,6 +115,7 @@ const RegistraUsuario = ({ navigation }) => {
                             onPress={() => handleNextStep(1)}
                             backgroundColor="#A03651"
                             textColor="#fff"
+                            style={styles.buttonContainer}
                         />
                     </>
                 ) : step === 2 ? (
@@ -131,6 +142,7 @@ const RegistraUsuario = ({ navigation }) => {
                             onPress={() => handleNextStep(2)}
                             backgroundColor="#A03651"
                             textColor="#fff"
+                            style={styles.buttonContainer}
                         />
                         <Subtitulo style={styles.textSecondary} onPress={() => setStep(1)}>
                             Voltar
@@ -162,6 +174,7 @@ const RegistraUsuario = ({ navigation }) => {
                             onPress={handleRegister}
                             backgroundColor="#A03651"
                             textColor="#fff"
+                            style={styles.buttonContainer}
                         />
                         <Subtitulo style={styles.textSecondary} onPress={() => setStep(2)}>
                             Voltar
@@ -201,7 +214,7 @@ const styles = StyleSheet.create({
     },
     campoCadastro: {
         marginBottom: 15,
-        width: '100%', // Garantir que o campo e o picker ocupem toda a largura disponível
+        width: '100%', 
     },
     textSecondary: {
         marginTop: 20,
@@ -220,6 +233,14 @@ const styles = StyleSheet.create({
         height: 50,
         color: '#DC8AA8', // Cor do texto do Picker
     },
+    buttonContainer:{
+        position: 'absolute',
+        bottom: '15%',
+        right: 20,
+        alignItems: 'flex-end',
+        width: 150,
+        alignItems: 'center'
+    }
 });
 
 export default RegistraUsuario;

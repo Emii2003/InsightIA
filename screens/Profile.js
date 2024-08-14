@@ -1,33 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Alert, Text } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Botao from '../components/Botao';
 import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
 
-const Profile = ({ route }) => {
+const Profile = () => {
     const navigation = useNavigation();
     const currentRoute = useRoute().name;
-    const user = route?.params?.user;
+    const [user, setUser] = useState(null);
+
+    // Recupera os dados do usuário do AsyncStorage
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userData = await AsyncStorage.getItem('@user_data');
+                if (userData) {
+                    setUser(JSON.parse(userData));
+                } else {
+                    Alert.alert("Erro", "Não foi possível recuperar os dados do usuário.");
+                }
+            } catch (error) {
+                console.error('Erro ao recuperar dados do AsyncStorage:', error);
+                Alert.alert("Erro", "Ocorreu um erro ao carregar os dados do usuário.");
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleLogout = async () => {
         try {
             await getAuth().signOut();
+            await AsyncStorage.removeItem('@user_data'); // Remova os dados do AsyncStorage ao sair
             Alert.alert("Logout", "Você saiu da conta com sucesso.", [{ text: "OK", onPress: () => navigation.navigate("Login") }]);
         } catch (error) {
             Alert.alert("Erro", "Ocorreu um erro ao sair da conta. Tente novamente.");
         }
     };
-
-    React.useEffect(() => {
-        console.log('Profile Screen - User:', user);
-        navigation.addListener('beforeRemove', (e) => {
-            e.preventDefault();
-        });
-    }, [navigation, user]);
-    
 
     if (!user) {
         return (
@@ -48,7 +61,7 @@ const Profile = ({ route }) => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Titulo style={styles.headerNameUser}>{user.name}</Titulo>
-                <Titulo style={styles.headerText}>ID: 230 000 000 000</Titulo>
+                <Titulo style={styles.headerText}>ID: 230 000 000 000  </Titulo>
             </View>
 
             <View style={styles.buttonContainer}>
@@ -63,12 +76,11 @@ const Profile = ({ route }) => {
 
             <View style={styles.footer}>
                 <Rodape
-                    onHomePress={() => navigation.navigate('Home', { user: { name: user.name, email: user.email } })}
-                    onSearchPress={() => navigation.navigate('Search', { user: { name: user.name, email: user.email } })}
-                    onProfilePress={() => navigation.navigate('Profile', { user: { name: user.name, email: user.email } })}
+                    onHomePress={() => navigation.navigate('Home', { user: {  } })}
+                    onSearchPress={() => navigation.navigate('Search', { user: { name: user.name, email: user.email, uid: user.uid } })}
+                    onProfilePress={() => navigation.navigate('Profile', { user: { name: user.name, email: user.email, uid: user.uid } })}
                     currentRoute={currentRoute}
                 />
-
             </View>
         </View>
     );
@@ -97,11 +109,13 @@ const styles = StyleSheet.create({
     },
     headerText: {
         fontSize: 20,
-        fontWeight: '100'
+        fontWeight: '100',
+        color: '#fff',
     },
     headerNameUser: {
         fontSize: 30,
-        fontWeight: 900,
+        fontWeight: '900',
+        color: '#fff',
     },
     buttonContainer: {
         position: 'absolute',
