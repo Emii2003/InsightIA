@@ -5,7 +5,8 @@ import app from '../Firebase'; // Importação do Firebase
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';
-import Subtitulo from '../components/Subtitulo'; // Componente atualizado
+import Titulo from '../components/Titulo';
+import Subtitulo from '../components/Subtitulo'
 
 const RecuperarSenha = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -26,21 +27,25 @@ const RecuperarSenha = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.contentMain}>
-                <Subtitulo name="Digite seu e-mail" />
-                <CampoTexto
-                    placeholder="Digite seu e-mail"
-                    value={email}
-                    onChangeText={setEmail}
-                />
+
+                <View style={styles.campoCadastro}>
+                    <Titulo style={styles.title}>Digite seu E-mail</Titulo>
+                    <CampoTexto
+                        placeholder="Digite seu e-mail"
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+                </View>
+
                 <Botao
                     name="Enviar e-mail de redefinição"
                     onPress={handlePasswordReset}
                     backgroundColor="#A03651"
                     textColor="#fff"
                 />
-                <Text style={styles.textSecondary} onPress={() => navigation.navigate('Login')}>
-                    Lembrou a senha? <Text style={styles.innerText}>Entre aqui</Text>
-                </Text>
+                <Subtitulo style={styles.textSecondary} onPress={() => navigation.navigate('Login')}>
+                    Lembrou a senha? <Subtitulo style={styles.innerText}>Entre aqui</Subtitulo>
+                </Subtitulo>
             </View>
         </View>
     );
@@ -55,12 +60,16 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20,
     },
-    textSecondary: {
-        marginTop: 20,
+    campoCadastro: {
+        marginBottom: 15,
+        width: '75%',
+    },
+    title: {
+        marginBottom: 30,
         color: '#fff',
     },
+
     innerText: {
         color: '#A03651',
     },

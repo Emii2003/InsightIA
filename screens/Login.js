@@ -109,7 +109,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     input: {
-        marginBottom: 50
+        marginBottom: 50,
+        width: '80%'
     },
     title: {
         marginBottom: 10,
