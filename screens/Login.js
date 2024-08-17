@@ -21,7 +21,6 @@ export default function Login({ navigation }) {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Busca o nome do usuário do Firestore
             const db = getFirestore(app);
             const userDoc = await getDoc(doc(db, 'dadosUsuarios', user.uid));
 
@@ -43,11 +42,11 @@ export default function Login({ navigation }) {
                     Alert.alert('Sucesso', 'Usuário logado com sucesso!');
                 } else {
                     Alert.alert('Erro', 'Por favor, verifique seu e-mail antes de fazer login.');
-                    auth.signOut(); // Desconecta o usuário
+                    auth.signOut(); 
                 }
             } else {
                 Alert.alert('Erro', 'Dados do usuário não encontrados no Firestore.');
-                auth.signOut(); // Desconecta o usuário
+                auth.signOut(); 
             }
         } catch (error) {
             console.error('Erro de autenticação:', error.message);

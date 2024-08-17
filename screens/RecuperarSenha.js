@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import app from '../Firebase'; // Importação do Firebase
+import app from '../Firebase'; 
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';
@@ -17,7 +17,7 @@ const RecuperarSenha = ({ navigation }) => {
         try {
             await sendPasswordResetEmail(auth, email);
             Alert.alert('Sucesso', 'E-mail de redefinição de senha enviado!');
-            navigation.navigate('Login'); // Redireciona para a tela de login
+            navigation.navigate('Login');
         } catch (error) {
             console.error('Erro ao redefinir senha:', error.message);
             Alert.alert('Erro', error.message);

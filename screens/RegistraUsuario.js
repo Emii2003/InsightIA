@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import app from '../Firebase'; // Importação do Firebase
+import app from '../Firebase'; 
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';
@@ -67,11 +67,10 @@ const RegistraUsuario = ({ navigation }) => {
                 categoriaEmpresa,
             }));
     
-            // Envia email de verificação
             await sendEmailVerification(user);
     
             Alert.alert('Sucesso', 'Usuário criado com sucesso! Verifique seu e-mail para ativar sua conta.');
-            navigation.navigate('Login'); // Redireciona para a tela de login
+            navigation.navigate('Login'); 
         } catch (error) {
             console.error('Erro de autenticação:', error.message);
             Alert.alert('Erro', error.message);
@@ -231,7 +230,7 @@ const styles = StyleSheet.create({
     },
     picker: {
         height: 50,
-        color: '#DC8AA8', // Cor do texto do Picker
+        color: '#DC8AA8', 
     },
     buttonContainer:{
         position: 'absolute',

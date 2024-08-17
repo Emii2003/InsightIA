@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import app from '../Firebase'; 
 
-import app from '../Firebase'; // Importação do Firebase
 import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
 import Subtitulo from '../components/Subtitulo'

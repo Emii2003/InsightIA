@@ -13,7 +13,6 @@ const Profile = () => {
     const currentRoute = useRoute().name;
     const [user, setUser] = useState(null);
 
-    // Recupera os dados do usuário do AsyncStorage
     useEffect(() => {
         const fetchUserData = async () => {
             try {
