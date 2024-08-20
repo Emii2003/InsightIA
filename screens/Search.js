@@ -17,7 +17,6 @@ const Search = () => {
     const [error, setError] = useState(null);
     const currentRoute = route.name;
 
-    // Obtendo o ID do usuário dos parâmetros da rota
     const user = route?.params?.user;
 
     const handleSearch = (searchTerm) => {

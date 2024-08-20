@@ -34,7 +34,7 @@ const Profile = () => {
     const handleLogout = async () => {
         try {
             await getAuth().signOut();
-            await AsyncStorage.removeItem('@user_data'); // Remova os dados do AsyncStorage ao sair
+            await AsyncStorage.removeItem('@user_data'); 
             Alert.alert("Logout", "Você saiu da conta com sucesso.", [{ text: "OK", onPress: () => navigation.navigate("Login") }]);
         } catch (error) {
             Alert.alert("Erro", "Ocorreu um erro ao sair da conta. Tente novamente.");

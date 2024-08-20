@@ -16,12 +16,12 @@ const CampoBusca = ({ style, onSearch }) => {
             <TextInput
                 style={styles.input}
                 placeholder="Empresa concorrente..."
-                placeholderTextColor="#DC8AA8"
+                placeholderTextColor="#fff"
                 value={searchTerm}
                 onChangeText={setSearchTerm}
             />
             <TouchableOpacity onPress={handleSearch} style={styles.button}>
-                <Ionicons name="search" size={24} color="#DC8AA8" />
+                <Ionicons name="search" size={24} color="#fff" />
             </TouchableOpacity>
         </View>
     );
@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#232222',
         width: '100%',
         borderRadius: 8,
+        borderWidth: 2, 
+        borderColor: '#A03651'
     },
     input: {
         flex: 1,
@@ -42,7 +44,8 @@ const styles = StyleSheet.create({
         color: '#DC8AA8',
     },
     button: {
-        padding: 10,
+        padding: 20,
+        backgroundColor: '#A03651',
         justifyContent: 'center',
         alignItems: 'center',
     },
