@@ -75,9 +75,9 @@ const Profile = () => {
 
             <View style={styles.footer}>
                 <Rodape
-                    onHomePress={() => navigation.navigate('Home', { user: {  } })}
-                    onSearchPress={() => navigation.navigate('Search', { user: { name: user.name, email: user.email, uid: user.uid } })}
-                    onProfilePress={() => navigation.navigate('Profile', { user: { name: user.name, email: user.email, uid: user.uid } })}
+                    onAnalisePress={() => navigation.navigate('AnaliseInterna', { user })}
+                    onSearchPress={() => navigation.navigate('Search', { user })}
+                    onProfilePress={() => navigation.navigate('Profile', { user })}
                     currentRoute={currentRoute}
                 />
             </View>

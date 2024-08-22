@@ -8,7 +8,7 @@ const Botao = ({ name, onPress, backgroundColor, textColor, borderColor, style }
           styles.buttonBase,
           backgroundColor && { backgroundColor },
           borderColor && { borderColor, borderWidth: 2 },
-          style // Adiciona estilos personalizados passados como prop
+          style 
         ]}
         onPress={onPress}
       >

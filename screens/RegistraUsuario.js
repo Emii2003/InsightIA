@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import app from '../Firebase'; 
+import app from '../api/Firebase'; 
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';
@@ -59,23 +59,26 @@ const RegistraUsuario = ({ navigation }) => {
                 categoriaEmpresa,
             });
     
+            await sendEmailVerification(user);
+    
             // Armazena os dados do usuário no AsyncStorage
             await AsyncStorage.setItem('@user_data', JSON.stringify({
+                uid: user.uid,
                 email,
                 name,
                 nomeEmpresa,
                 categoriaEmpresa,
             }));
     
-            await sendEmailVerification(user);
-    
             Alert.alert('Sucesso', 'Usuário criado com sucesso! Verifique seu e-mail para ativar sua conta.');
-            navigation.navigate('Login'); 
+            navigation.navigate('Login');
         } catch (error) {
             console.error('Erro de autenticação:', error.message);
-            Alert.alert('Erro', error.message);
+            Alert.alert('Erro', error.message.includes('auth/email-already-in-use') 
+                ? 'O e-mail já está em uso.' 
+                : 'Erro ao criar conta. Tente novamente.');
         }
-    };
+    };    
 
     return (
         <View style={styles.container}>

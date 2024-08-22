@@ -3,14 +3,14 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 
-const Rodape = ({ onHomePress, onSearchPress, onProfilePress, currentRoute, user }) => {
+const Rodape = ({ onAnalisePress, onSearchPress, onProfilePress, currentRoute, user }) => {
     return (
         <View style={styles.footer}>
-            <TouchableOpacity onPress={() => onHomePress(user)}>
+            <TouchableOpacity onPress={() => onAnalisePress(user)}>
                 <Ionicons
                     name="analytics"
                     size={30}
-                    color={currentRoute === 'Home' ? '#A03651' : '#fff'}
+                    color={currentRoute === 'AnaliseInterna' ? '#A03651' : '#fff'}
                 />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onSearchPress(user)}>
@@ -30,7 +30,6 @@ const Rodape = ({ onHomePress, onSearchPress, onProfilePress, currentRoute, user
         </View>
     );
 };
-
 
 const styles = StyleSheet.create({
     footer: {

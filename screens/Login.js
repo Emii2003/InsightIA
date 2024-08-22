@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Alert } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import app from '../Firebase';
+import app from '../api/Firebase';
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';
@@ -20,39 +20,42 @@ export default function Login({ navigation }) {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-
+    
             const db = getFirestore(app);
             const userDoc = await getDoc(doc(db, 'dadosUsuarios', user.uid));
-
+    
             if (userDoc.exists()) {
                 const userData = userDoc.data();
-
+    
                 if (user.emailVerified) {
-                    // Armazena os dados do usuário no AsyncStorage
-                    await AsyncStorage.setItem('@user_data', JSON.stringify({
+                    const userInfo = {
                         uid: user.uid,
                         email: user.email,
                         name: userData.name,
                         nomeEmpresa: userData.nomeEmpresa,
                         categoriaEmpresa: userData.categoriaEmpresa,
-                    }));
-
-                    // Navega para a tela de perfil
+                    };
+    
+                    await AsyncStorage.setItem('@user_data', JSON.stringify(userInfo));
+    
                     navigation.replace('Profile');
                     Alert.alert('Sucesso', 'Usuário logado com sucesso!');
                 } else {
                     Alert.alert('Erro', 'Por favor, verifique seu e-mail antes de fazer login.');
-                    auth.signOut(); 
+                    await auth.signOut();
                 }
             } else {
                 Alert.alert('Erro', 'Dados do usuário não encontrados no Firestore.');
-                auth.signOut(); 
+                await auth.signOut();
             }
         } catch (error) {
             console.error('Erro de autenticação:', error.message);
-            Alert.alert('Erro', error.message);
+            Alert.alert('Erro', error.message.includes('auth/user-not-found') 
+                ? 'Usuário não encontrado.' 
+                : 'Erro ao fazer login. Verifique suas credenciais e tente novamente.');
         }
     };
+    
 
     return (
         <View style={styles.container}>

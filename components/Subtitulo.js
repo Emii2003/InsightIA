@@ -11,7 +11,7 @@ const Subtitulo = ({ style, children, onPress }) => {
 }
 
 Subtitulo.propTypes = {
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     style: PropTypes.object,
 };
 

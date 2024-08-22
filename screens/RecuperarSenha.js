@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Alert } from 'react-native';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import app from '../Firebase'; 
+import app from '../api/Firebase'; 
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';

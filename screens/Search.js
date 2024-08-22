@@ -1,12 +1,13 @@
+// screens/SearchScreen.js
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import app from '../Firebase'; 
+import app from '../api/Firebase'; 
 
 import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
-import Subtitulo from '../components/Subtitulo'
+import Subtitulo from '../components/Subtitulo';
 import CampoBusca from '../components/CampoBusca';
 
 const Search = () => {
@@ -23,11 +24,9 @@ const Search = () => {
         console.log('Buscando por:', searchTerm);
     };
 
-    console.log('Search Screen - User:', user);
-
     useEffect(() => {
         const fetchUserData = async () => {
-            if (!user) {
+            if (!user || !user.uid) {
                 setError('ID do usuário não fornecido.');
                 setLoading(false);
                 return;
@@ -52,7 +51,7 @@ const Search = () => {
         };
 
         fetchUserData();
-    }, [user.uid]);
+    }, [user]);
 
     if (loading) {
         return <Text>Carregando...</Text>;
@@ -73,8 +72,8 @@ const Search = () => {
                     <Titulo style={styles.headerText}>Sua empresa</Titulo>
                     <Titulo style={styles.headerNameUser}>{userData?.nomeEmpresa || 'Não disponível'}</Titulo>
                     <View style={styles.line} />
-                    <Subtitulo style={styles.subtituloMain}> Veja os pontos negativos das suas empresas concorrentes e receba insights valiosos.</Subtitulo>
-                    <Subtitulo style={styles.subtituloMain}> Insira a nome da empresa concorrente</Subtitulo>
+                    <Subtitulo style={styles.subtituloMain}>Veja os pontos negativos das suas empresas concorrentes e receba insights valiosos.</Subtitulo>
+                    <Subtitulo style={styles.subtituloMain}>Insira o nome da empresa concorrente</Subtitulo>
                 </View>
 
                 <View style={styles.main}>
@@ -84,7 +83,7 @@ const Search = () => {
 
             <View style={styles.footer}>
                 <Rodape
-                    onHomePress={() => navigation.navigate('Home', { user: userData })}
+                    onAnalisePress={() => navigation.navigate('AnaliseInterna', { user: userData })}
                     onSearchPress={() => navigation.navigate('Search', { user: userData })}
                     onProfilePress={() => navigation.navigate('Profile', { user: userData })}
                     currentRoute={currentRoute}
