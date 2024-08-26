@@ -1,5 +1,5 @@
 
-# InisightIA
+# InsightIA
 
 Nosso projeto visa em criar uma aplicação para as empresas de pequeno e médio porte. Conta com duas funcionalidades principais, nossa análise de sentimento que reunirá os principais comentários e feedbacks de empresas concorrentes e nossa análise interna que fornecerá insights valiosos de como impulsionar o crescimento empresarial. 
 
