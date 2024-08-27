@@ -1,22 +1,35 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import app from '../api/Firebase'
 
-const UserContext = createContext();
+export const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const auth = getAuth(app);
 
-    const value = {
-        user,
-        setUser,
-    };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        const userData = await AsyncStorage.getItem('@user_data');
+        setUser(JSON.parse(userData));
+      } else {
+        setUser(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
-    return (
-        <UserContext.Provider value={value}>
-            {children}
-        </UserContext.Provider>
-    );
-};
+  const logout = async () => {
+    await signOut(auth);
+    await AsyncStorage.removeItem('@user_data');
+    setUser(null);
+  };
 
-export const useUser = () => {
-    return useContext(UserContext);
+  return (
+    <UserContext.Provider value={{ user, setUser, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
 };

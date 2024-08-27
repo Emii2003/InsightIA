@@ -1,24 +1,22 @@
-// screens/SearchScreen.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import app from '../api/Firebase'; 
+import app from '../api/Firebase';
 
+import { UserContext } from '../context/UserContext';
 import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
 import Subtitulo from '../components/Subtitulo';
 import CampoBusca from '../components/CampoBusca';
 
 const Search = () => {
-    const route = useRoute();
+    const { user } = useContext(UserContext); // Consumindo o UserContext
     const navigation = useNavigation();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const currentRoute = route.name;
-
-    const user = route?.params?.user;
+    const currentRoute = useRoute().name;
 
     const handleSearch = (searchTerm) => {
         console.log('Buscando por:', searchTerm);
@@ -83,9 +81,9 @@ const Search = () => {
 
             <View style={styles.footer}>
                 <Rodape
-                    onAnalisePress={() => navigation.navigate('AnaliseInterna', { user: userData })}
-                    onSearchPress={() => navigation.navigate('Search', { user: userData })}
-                    onProfilePress={() => navigation.navigate('Profile', { user: userData })}
+                    onAnalisePress={() => navigation.navigate('AnaliseInterna')}
+                    onSearchPress={() => navigation.navigate('Search')}
+                    onProfilePress={() => navigation.navigate('Profile')}
                     currentRoute={currentRoute}
                 />
             </View>
