@@ -57,6 +57,7 @@ const RegistraUsuario = ({ navigation }) => {
                 name,
                 nomeEmpresa,
                 categoriaEmpresa,
+                createdAt: new Date(), // Adiciona a data de criação
             });
     
             await sendEmailVerification(user);

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import app from '../api/Firebase';
+import { UserContext } from '../context/UserContext'; 
 
 import CampoTexto from '../components/CampoTexto';
 import Botao from '../components/Botao';
@@ -13,6 +14,7 @@ import Subtitulo from '../components/Subtitulo';
 export default function Login({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { setUser } = useContext(UserContext);  
 
     const auth = getAuth(app);
 
@@ -37,6 +39,7 @@ export default function Login({ navigation }) {
                     };
     
                     await AsyncStorage.setItem('@user_data', JSON.stringify(userInfo));
+                    setUser(userInfo);  // Atualiza o estado global do usuário
     
                     navigation.replace('Profile');
                     Alert.alert('Sucesso', 'Usuário logado com sucesso!');

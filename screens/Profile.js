@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Alert, Text } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { UserContext } from '../context/UserContext';
 import Botao from '../components/Botao';
 import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
@@ -11,30 +11,12 @@ import Rodape from '../components/Rodape';
 const Profile = () => {
     const navigation = useNavigation();
     const currentRoute = useRoute().name;
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const userData = await AsyncStorage.getItem('@user_data');
-                if (userData) {
-                    setUser(JSON.parse(userData));
-                } else {
-                    Alert.alert("Erro", "Não foi possível recuperar os dados do usuário.");
-                }
-            } catch (error) {
-                console.error('Erro ao recuperar dados do AsyncStorage:', error);
-                Alert.alert("Erro", "Ocorreu um erro ao carregar os dados do usuário.");
-            }
-        };
-
-        fetchUserData();
-    }, []);
+    const { user, setUser } = useContext(UserContext);  // Consumindo o UserContext
 
     const handleLogout = async () => {
         try {
             await getAuth().signOut();
-            await AsyncStorage.removeItem('@user_data'); 
+            setUser(null);
             Alert.alert("Logout", "Você saiu da conta com sucesso.", [{ text: "OK", onPress: () => navigation.navigate("Login") }]);
         } catch (error) {
             Alert.alert("Erro", "Ocorreu um erro ao sair da conta. Tente novamente.");
@@ -75,9 +57,9 @@ const Profile = () => {
 
             <View style={styles.footer}>
                 <Rodape
-                    onAnalisePress={() => navigation.navigate('AnaliseInterna', { user })}
-                    onSearchPress={() => navigation.navigate('Search', { user })}
-                    onProfilePress={() => navigation.navigate('Profile', { user })}
+                    onAnalisePress={() => navigation.navigate('AnaliseInterna')}
+                    onSearchPress={() => navigation.navigate('Search')}
+                    onProfilePress={() => navigation.navigate('Profile')}
                     currentRoute={currentRoute}
                 />
             </View>

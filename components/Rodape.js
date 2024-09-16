@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext, Text } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 
-const Rodape = ({ onAnalisePress, onSearchPress, onProfilePress, currentRoute, user }) => {
+import { UserContext } from '../context/UserContext';
+
+const Rodape = ({ onAnalisePress, onSearchPress, onProfilePress, currentRoute }) => {
+    const { user } = useContext(UserContext);  
+
     return (
         <View style={styles.footer}>
             <TouchableOpacity onPress={() => onAnalisePress(user)}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { AuthProvider } from './context/UserContext';  
 
 import Home from './screens/Home';
 import Login from './screens/Login';
@@ -15,7 +16,6 @@ import { LogBox } from 'react-native';
 
 LogBox.ignoreAllLogs(); // Ignora todos os logs
 const Stack = createStackNavigator();
-import './api/Firebase';
 
 function MyStack() {
   return (
@@ -33,8 +33,10 @@ function MyStack() {
 
 export default function App() {
   return (
+    <AuthProvider>
       <NavigationContainer>
         <MyStack />
       </NavigationContainer>
+    </AuthProvider>
   );
 }
