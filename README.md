@@ -7,6 +7,17 @@ Nosso projeto visa em criar uma aplicação para as empresas de pequeno e médio
 ## Figma
 https://www.figma.com/design/9s0ZOoMjLGhcEPiYdnWToi/Untitled?node-id=138-3&t=LJO2AzvwpGYMBlNt-0
 
+## Nomes
+
+**Caio Vitor Urbano Neves**
+
+**Emile de Moura Maia** 
+
+**Guilherme Pereira De Oliveira** 
+
+**Júlia Andrade Dias** 
+
+**Maria Eduarda Costa de Araújo Vieira** 
 
 ## Stack utilizada
 

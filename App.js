@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AuthProvider } from './context/UserContext';  // Ajuste o caminho aqui
+import { AuthProvider } from './context/UserContext';  
 
 import Home from './screens/Home';
 import Login from './screens/Login';

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, Text } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';

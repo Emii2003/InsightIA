@@ -1,21 +1,33 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../api/Firebase';
 
 import { UserContext } from '../context/UserContext';
-import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
-import Subtitulo from '../components/Subtitulo';
+import Historico from '../components/Historico';
 
 const AnaliseInterna = () => {
-    const { user } = useContext(UserContext); // Consumindo o UserContext
+    const { user } = useContext(UserContext); 
     const navigation = useNavigation();
     const [userData, setUserData] = useState(null);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const currentRoute = useRoute().name;
+
+    useEffect(() => {
+        const fetchData = async () => {
+          await fetch(`https://insightiaapi-production.up.railway.app/historico/`)
+            .then(response => response.json())
+            .then(data => setData(data.dados))
+            .catch(error => console.log('Erro ao buscar dados:', error))
+            .finally(() => setLoading(false));
+        };
+    
+        fetchData();
+      }, []);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -57,15 +69,24 @@ const AnaliseInterna = () => {
             </View>
         );
     }
-
+    
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                <View style={styles.header}>
-                    <Titulo style={styles.headerText}>Análise Interna</Titulo>
-                    <View style={styles.line} />
-                    <Subtitulo style={styles.subtituloMain}>Aqui estão suas análises internas.</Subtitulo>
-                </View>
+
+                <FlatList
+                    data={data}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                <Historico
+                    empresa={item.empresa}
+                    apelido={item.apelido}
+                    qtdReclamacoes={item.qtd_reclamacoes}
+                    dataOperacao={item['data-operacao']}
+                    onPress={() => navigation.navigate('Detalhes', { item })} 
+                />
+        )}
+      />
             </ScrollView>
 
             <View style={styles.footer}>
@@ -86,33 +107,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#272727',
     },
     scrollViewContainer: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'right',
         padding: 30,
-    },
-    header: {
-        width: '100%',
-        position: 'absolute',
-        top: 100,
-        zIndex: 1,
-        padding: 30,
-    },
-    headerText: {
-        fontSize: 20,
-        fontWeight: '100',
-        color: '#fff',
-    },
-    line: {
-        width: '100%',
-        height: 10,
-        backgroundColor: '#A03651',
-        marginTop: 20,
-    },
-    subtituloMain: {
-        fontSize: 18,
-        top: 50,
-        lineHeight: 30
     },
     footer: {
         width: '100%',
