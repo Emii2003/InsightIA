@@ -9,12 +9,15 @@ import RegistraUsuario from './screens/RegistraUsuario';
 import RecuperarSenha from './screens/RecuperarSenha';
 import Profile from './screens/Profile';
 import Search from './screens/Search';
-import AnaliseInterna from './screens/AnaliseInterna';
+import ReclamacoesScreen from './screens/ReclamacoesScreen';
+import ResultadoAnaliseScreen from './screens/ResultadoAnaliseScreen';
+import SugestoesMelhoriaRA from './screens/SugestoesMelhoriaRA'
+import GraficoScreen from './screens/GraficoScreen';
 
 import 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 
-LogBox.ignoreAllLogs(); // Ignora todos os logs
+LogBox.ignoreAllLogs(); 
 const Stack = createStackNavigator();
 
 function MyStack() {
@@ -26,7 +29,10 @@ function MyStack() {
       <Stack.Screen name="RecuperarSenha" component={RecuperarSenha} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Search" component={Search} />
-      <Stack.Screen name="AnaliseInterna" component={AnaliseInterna} />
+      <Stack.Screen name="ResultadoAnaliseScreen" component={ResultadoAnaliseScreen} />
+      <Stack.Screen name="ReclamacoesScreen" component={ReclamacoesScreen} />
+      <Stack.Screen name="SugestoesMelhoriaRA" component={SugestoesMelhoriaRA} />
+      <Stack.Screen name="GraficoScreen" component={GraficoScreen} />
     </Stack.Navigator>
   );
 }

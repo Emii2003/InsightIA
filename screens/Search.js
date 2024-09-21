@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../api/Firebase';
@@ -11,15 +11,23 @@ import Subtitulo from '../components/Subtitulo';
 import CampoBusca from '../components/CampoBusca';
 
 const Search = () => {
-    const { user } = useContext(UserContext); // Consumindo o UserContext
+    const { user } = useContext(UserContext);
     const navigation = useNavigation();
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchLoading, setSearchLoading] = useState(false);
+    const [searchCompleted, setSearchCompleted] = useState(false);
     const currentRoute = useRoute().name;
 
     const handleSearch = (searchTerm) => {
         console.log('Buscando por:', searchTerm);
+        setSearchLoading(true);
+
+        setTimeout(() => {
+            setSearchLoading(false);
+            setSearchCompleted(true);
+        }, 4000);
     };
 
     useEffect(() => {
@@ -70,18 +78,20 @@ const Search = () => {
                     <Titulo style={styles.headerText}>Sua empresa</Titulo>
                     <Titulo style={styles.headerNameUser}>{userData?.nomeEmpresa || 'Não disponível'}</Titulo>
                     <View style={styles.line} />
-                    <Subtitulo style={styles.subtituloMain}>Veja os pontos negativos das suas empresas concorrentes e receba insights valiosos.</Subtitulo>
-                    <Subtitulo style={styles.subtituloMain}>Insira o nome da empresa concorrente</Subtitulo>
+                    <Subtitulo style={styles.subtituloMain}>Veja os pontos negativos da sua empresa e receba insights valiosos.</Subtitulo>
                 </View>
 
                 <View style={styles.main}>
-                    <CampoBusca onSearch={handleSearch} />
+                    <CampoBusca onSearch={handleSearch} loading={searchLoading} />
+                    {!searchLoading && searchCompleted && (
+                        <Text style={styles.successText}>Análise Concluída</Text>
+                    )}
                 </View>
             </ScrollView>
 
             <View style={styles.footer}>
                 <Rodape
-                    onAnalisePress={() => navigation.navigate('AnaliseInterna')}
+                    onAnalisePress={() => navigation.navigate('ResultadoAnaliseScreen')}
                     onSearchPress={() => navigation.navigate('Search')}
                     onProfilePress={() => navigation.navigate('Profile')}
                     currentRoute={currentRoute}
@@ -146,6 +156,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#fff',
         marginBottom: 20,
+    },
+    successText: {
+        fontSize: 18,
+        color: '#fff',
+        marginTop: 20,
     },
 });
 

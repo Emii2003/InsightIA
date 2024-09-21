@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TextInput, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const CampoBusca = ({ style, onSearch }) => {
+const CampoBusca = ({ style, onSearch, loading }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = () => {
@@ -15,14 +15,18 @@ const CampoBusca = ({ style, onSearch }) => {
         <View style={[styles.container, style]}>
             <TextInput
                 style={styles.input}
-                placeholder="Empresa concorrente..."
+                placeholder="Nome da sua empresa..."
                 placeholderTextColor="#fff"
                 value={searchTerm}
                 onChangeText={setSearchTerm}
             />
-            <TouchableOpacity onPress={handleSearch} style={styles.button}>
-                <Ionicons name="search" size={24} color="#fff" />
-            </TouchableOpacity>
+            {loading ? (
+                <ActivityIndicator size="small" color="#fff" style={styles.button} />
+            ) : (
+                <TouchableOpacity onPress={handleSearch} style={styles.button}>
+                    <Ionicons name="search" size={24} color="#fff" />
+                </TouchableOpacity>
+            )}
         </View>
     );
 };

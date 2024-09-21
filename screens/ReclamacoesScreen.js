@@ -1,17 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../api/Firebase';
 
 import { UserContext } from '../context/UserContext';
 import Rodape from '../components/Rodape';
-import Historico from '../components/Historico';
+import ReclamacoesComponent from '../components/ReclamacoesComponent';
 
-const AnaliseInterna = () => {
+const ReclamacoesScreen = () => {
     const { user } = useContext(UserContext); 
     const navigation = useNavigation();
-    const [userData, setUserData] = useState(null);
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -19,44 +18,20 @@ const AnaliseInterna = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-          await fetch(`https://insightiaapi-production.up.railway.app/historico/`)
-            .then(response => response.json())
-            .then(data => setData(data.dados))
-            .catch(error => console.log('Erro ao buscar dados:', error))
-            .finally(() => setLoading(false));
-        };
-    
-        fetchData();
-      }, []);
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            if (!user || !user.uid) {
-                setError('ID do usuário não fornecido.');
-                setLoading(false);
-                return;
-            }
-
             try {
-                const db = getFirestore(app);
-                const userDocRef = doc(db, 'dadosUsuarios', user.uid);
-                const userDoc = await getDoc(userDocRef);
-
-                if (userDoc.exists()) {
-                    setUserData(userDoc.data());
-                } else {
-                    setError('Usuário não encontrado!');
-                }
+                const response = await fetch(`https://insightiaapi-production.up.railway.app/reclamacoes/lojas-marisa-loja-fisica`);
+                const result = await response.json();
+                setData(result.dados);
             } catch (error) {
-                console.error('Erro ao recuperar os dados do usuário:', error);
-                setError('Erro ao recuperar os dados do usuário.');
+                setError('Erro ao buscar dados da API.');
+                console.log('Erro ao buscar dados:', error);
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchUserData();
-    }, [user]);
+        fetchData();
+    }, []);
 
     if (loading) {
         return <Text>Carregando...</Text>;
@@ -69,29 +44,35 @@ const AnaliseInterna = () => {
             </View>
         );
     }
-    
+
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-
+                <TouchableOpacity style={styles.closeButtonContainer} onPress={() => navigation.goBack()}>
+                    <Text style={styles.closeButton}>X</Text>
+                </TouchableOpacity>
                 <FlatList
                     data={data}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
-                <Historico
-                    empresa={item.empresa}
-                    apelido={item.apelido}
-                    qtdReclamacoes={item.qtd_reclamacoes}
-                    dataOperacao={item['data-operacao']}
-                    onPress={() => navigation.navigate('Detalhes', { item })} 
+                        <ReclamacoesComponent
+                            titulo={item.titulo}
+                            apelido={item.apelido}
+                            empresa={item.empresa}
+                            tempo={item.tempo}
+                            descricao={item.descricao}
+                            status={item.status}
+                            link={item.link}
+                            dataOperacao={item['data-operacao']}
+                            onPress={() => navigation.navigate('Detalhes', { item })} // Navegar para detalhes
+                        />
+                    )}
                 />
-        )}
-      />
             </ScrollView>
 
             <View style={styles.footer}>
                 <Rodape
-                    onAnalisePress={() => navigation.navigate('AnaliseInterna')}
+                    onAnalisePress={() => navigation.navigate('ResultadoAnaliseScreen')}
                     onSearchPress={() => navigation.navigate('Search')}
                     onProfilePress={() => navigation.navigate('Profile')}
                     currentRoute={currentRoute}
@@ -106,8 +87,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#272727',
     },
+    closeButtonContainer: {
+        position: 'absolute',
+        top: 20,
+        right: 20,
+    },
+    closeButton: {
+        fontSize: 30,
+        color: '#FFF',
+    },
     scrollViewContainer: {
         padding: 30,
+        paddingTop: 60,
     },
     footer: {
         width: '100%',
@@ -125,4 +116,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AnaliseInterna;
+export default ReclamacoesScreen;

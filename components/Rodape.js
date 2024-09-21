@@ -14,7 +14,7 @@ const Rodape = ({ onAnalisePress, onSearchPress, onProfilePress, currentRoute })
                 <Ionicons
                     name="analytics"
                     size={30}
-                    color={currentRoute === 'AnaliseInterna' ? '#A03651' : '#fff'}
+                    color={currentRoute === 'ResultadoAnaliseScreen' ? '#A03651' : '#fff'}
                 />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onSearchPress(user)}>

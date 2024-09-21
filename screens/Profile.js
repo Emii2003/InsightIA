@@ -57,7 +57,7 @@ const Profile = () => {
 
             <View style={styles.footer}>
                 <Rodape
-                    onAnalisePress={() => navigation.navigate('AnaliseInterna')}
+                    onAnalisePress={() => navigation.navigate('ResultadoAnaliseScreen')}
                     onSearchPress={() => navigation.navigate('Search')}
                     onProfilePress={() => navigation.navigate('Profile')}
                     currentRoute={currentRoute}
