@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../api/Firebase';
@@ -9,6 +9,7 @@ import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
 import Subtitulo from '../components/Subtitulo';
 import CampoBusca from '../components/CampoBusca';
+import Botao from '../components/Botao';
 
 const Search = () => {
     const { user } = useContext(UserContext);
@@ -84,7 +85,7 @@ const Search = () => {
                 <View style={styles.main}>
                     <CampoBusca onSearch={handleSearch} loading={searchLoading} />
                     {!searchLoading && searchCompleted && (
-                        <Text style={styles.successText}>Análise Concluída</Text>
+                         Alert.alert('Sucesso', 'Análise Salva!!')
                     )}
                 </View>
             </ScrollView>

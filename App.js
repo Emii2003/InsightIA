@@ -11,7 +11,7 @@ import Profile from './screens/Profile';
 import Search from './screens/Search';
 import ReclamacoesScreen from './screens/ReclamacoesScreen';
 import ResultadoAnaliseScreen from './screens/ResultadoAnaliseScreen';
-import SugestoesMelhoriaRA from './screens/SugestoesMelhoriaRA'
+import GeminiAnaliseInterna from './screens/GeminiAnaliseInterna'
 import GraficoScreen from './screens/GraficoScreen';
 
 import 'react-native-gesture-handler';
@@ -31,7 +31,7 @@ function MyStack() {
       <Stack.Screen name="Search" component={Search} />
       <Stack.Screen name="ResultadoAnaliseScreen" component={ResultadoAnaliseScreen} />
       <Stack.Screen name="ReclamacoesScreen" component={ReclamacoesScreen} />
-      <Stack.Screen name="SugestoesMelhoriaRA" component={SugestoesMelhoriaRA} />
+      <Stack.Screen name="GeminiAnaliseInterna" component={GeminiAnaliseInterna} />
       <Stack.Screen name="GraficoScreen" component={GraficoScreen} />
     </Stack.Navigator>
   );
