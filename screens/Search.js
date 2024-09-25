@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../api/Firebase';
-
 import { UserContext } from '../context/UserContext';
 import Titulo from '../components/Titulo';
 import Rodape from '../components/Rodape';
 import Subtitulo from '../components/Subtitulo';
 import CampoBusca from '../components/CampoBusca';
-import Botao from '../components/Botao';
+import CampoTexto from '../components/CampoTexto';
 
 const Search = () => {
     const { user } = useContext(UserContext);
@@ -19,16 +18,13 @@ const Search = () => {
     const [error, setError] = useState(null);
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchCompleted, setSearchCompleted] = useState(false);
+    const [apelido, setApelido] = useState('');
     const currentRoute = useRoute().name;
 
-    const handleSearch = (searchTerm) => {
-        console.log('Buscando por:', searchTerm);
-        setSearchLoading(true);
-
-        setTimeout(() => {
-            setSearchLoading(false);
-            setSearchCompleted(true);
-        }, 4000);
+    const handleSearch = async (data) => {
+        console.log('Dados recebidos na busca:', data);
+        // Aqui você pode lidar com os dados recebidos da busca
+        setSearchCompleted(true);
     };
 
     useEffect(() => {
@@ -83,10 +79,13 @@ const Search = () => {
                 </View>
 
                 <View style={styles.main}>
-                    <CampoBusca onSearch={handleSearch} loading={searchLoading} />
-                    {!searchLoading && searchCompleted && (
-                         Alert.alert('Sucesso', 'Análise Salva!!')
-                    )}
+                    <CampoTexto
+                        placeholder="Digite um apelido"
+                        value={apelido}
+                        onChangeText={setApelido}
+                        style={styles.apelidoInput}
+                    />
+                    <CampoBusca onSearch={handleSearch} loading={searchLoading} apelido={apelido} />
                 </View>
             </ScrollView>
 
@@ -137,12 +136,16 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     main: {
-        marginTop: 100
+        marginTop: 100,
     },
     subtituloMain: {
         fontSize: 18,
         top: 50,
-        lineHeight: 30
+        lineHeight: 30,
+    },
+    apelidoInput: {
+        marginBottom: 20,
+        color: '#fff',
     },
     footer: {
         width: '100%',

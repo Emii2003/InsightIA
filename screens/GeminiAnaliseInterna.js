@@ -21,7 +21,7 @@ const GeminiAnaliseInterna = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          `https://d7ab-2804-1b3-a440-2dae-b5a9-6fa8-ee6c-f7ad.ngrok-free.app/gemini/complexa/${empresa}`
+          `https://b4c0-187-49-184-225.ngrok-free.app/gemini/complexa/${empresa}`
         );
         setSugestoes(response.data.mensagem.sugestao);
         setCausas(response.data.mensagem.causas);
@@ -53,7 +53,7 @@ const GeminiAnaliseInterna = ({ navigation }) => {
       ) : (
         <ScrollView style={styles.scrollView}>
           <Markdown style={markdownStyles}>
-            {`${sugestoes}\n\n\n${causas}`}
+            {`## Sugestões\n\n${sugestoes}\n\n## Causas\n\n${causas}`}
           </Markdown>
         </ScrollView>
       )}
@@ -76,12 +76,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#FFF",
   },
-  headerText: {
-    fontSize: 22,
-    color: "#FFF",
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
   scrollView: {
     flex: 1,
   },
@@ -93,7 +87,7 @@ const styles = StyleSheet.create({
 
 const markdownStyles = {
   body: { color: "#FFF", fontSize: 18 },
-  heading: { color: "#FFF" },
+  heading: { color: "#FFF", fontSize: 24, fontWeight: "bold" },
 };
 
 export default GeminiAnaliseInterna;

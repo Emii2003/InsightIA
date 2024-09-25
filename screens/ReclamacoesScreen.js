@@ -19,7 +19,7 @@ const ReclamacoesScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`https://d7ab-2804-1b3-a440-2dae-b5a9-6fa8-ee6c-f7ad.ngrok-free.app/reclamacoes/lojas-marisa-loja-fisica`);
+                const response = await fetch(`https://b4c0-187-49-184-225.ngrok-free.app/reclamacoes/lojas-marisa-loja-fisica`);
                 const result = await response.json();
                 setData(result.dados);
             } catch (error) {

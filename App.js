@@ -13,6 +13,9 @@ import ReclamacoesScreen from './screens/ReclamacoesScreen';
 import ResultadoAnaliseScreen from './screens/ResultadoAnaliseScreen';
 import GeminiAnaliseInterna from './screens/GeminiAnaliseInterna'
 import GraficoScreen from './screens/GraficoScreen';
+import GeminiAnaliseExterna from './screens/GeminiAnaliseExterna'
+import EmpresasCadastradasScreen from './screens/EmpresasCadastradasScreen';
+import ReclamacoesConcorrentesScreen from './screens/ReclamacoesConcorrentesScreen';
 
 import 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
@@ -33,6 +36,9 @@ function MyStack() {
       <Stack.Screen name="ReclamacoesScreen" component={ReclamacoesScreen} />
       <Stack.Screen name="GeminiAnaliseInterna" component={GeminiAnaliseInterna} />
       <Stack.Screen name="GraficoScreen" component={GraficoScreen} />
+      <Stack.Screen name="GeminiAnaliseExterna" component={GeminiAnaliseExterna} />
+      <Stack.Screen name="EmpresasCadastradasScreen" component={EmpresasCadastradasScreen} />
+      <Stack.Screen name="ReclamacoesConcorrentesScreen" component={ReclamacoesConcorrentesScreen} />
     </Stack.Navigator>
   );
 }
