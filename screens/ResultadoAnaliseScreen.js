@@ -81,7 +81,7 @@ const ResultadoAnaliseScreen = () => {
                         Veja os pontos negativos da sua empresa concorrente e receba insights valiosos.
                     </Text>
                     <Botao
-                        name="Concorrentes Cadastradas"
+                        name="Empresas Cadastradas"
                         onPress={() => navigation.navigate("EmpresasCadastradasScreen", { empresas })} // Navega para a nova tela
                         backgroundColor="#A03651"
                         textColor="#FFFFFF"
@@ -111,7 +111,7 @@ const ResultadoAnaliseScreen = () => {
                 )}
                  {view === "minhaEmpresa" && ( // Condição para exibir o botão
                     <Botao
-                        name="Visualizar em gráfico"
+                        name="Ver análise individual das reclamações"
                         onPress={() => {
                             navigation.navigate('GraficoScreen', { empresa: 'lojas-marisa-loja-fisica' });
                         }}

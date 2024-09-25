@@ -86,8 +86,9 @@ const styles = StyleSheet.create({
 });
 
 const markdownStyles = {
-  body: { color: "#FFF", fontSize: 18 },
-  heading: { color: "#FFF", fontSize: 24, fontWeight: "bold" },
+  body: { color: "#FFF", fontSize: 22 }, // Aumenta o tamanho da fonte do corpo
+  heading: { color: "#A03651", fontSize: 26, fontWeight: "bold" }, // Títulos em amarelo
+  heading2: { color: "#A03651", fontSize: 24, fontWeight: "bold" }, // Subtítulos em azul
 };
 
 export default GeminiAnaliseInterna;

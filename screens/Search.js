@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import app from '../api/Firebase';
@@ -17,14 +17,16 @@ const Search = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchLoading, setSearchLoading] = useState(false);
-    const [searchCompleted, setSearchCompleted] = useState(false);
     const [apelido, setApelido] = useState('');
     const currentRoute = useRoute().name;
 
     const handleSearch = async (data) => {
+        setSearchLoading(true);  // Iniciar o loading
         console.log('Dados recebidos na busca:', data);
         // Aqui você pode lidar com os dados recebidos da busca
-        setSearchCompleted(true);
+        // Simulação de busca com delay
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Simula a busca
+        setSearchLoading(false); // Finalizar o loading
     };
 
     useEffect(() => {
@@ -87,6 +89,13 @@ const Search = () => {
                     />
                     <CampoBusca onSearch={handleSearch} loading={searchLoading} apelido={apelido} />
                 </View>
+
+                {searchLoading && (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="large" color="#fff" />
+                        <Text style={styles.loadingText}>Carregando...</Text>
+                    </View>
+                )}
             </ScrollView>
 
             <View style={styles.footer}>
@@ -161,10 +170,15 @@ const styles = StyleSheet.create({
         color: '#fff',
         marginBottom: 20,
     },
-    successText: {
-        fontSize: 18,
-        color: '#fff',
+    loadingContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
         marginTop: 20,
+    },
+    loadingText: {
+        color: '#fff',
+        marginLeft: 10,
     },
 });
 
